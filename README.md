@@ -1,6 +1,6 @@
 # pystran
 
-*no longer maintained*
+*currently converging to py3*
 
 Toolset of dynamical model STRucture ANalysis algorithms
 
