@@ -8,7 +8,7 @@ pySTAN: python STRucture ANalyst
 import numpy as np
 import matplotlib.pyplot as plt
 
-#from evaluationfunctions import Evaluation, Likelihood
+from evaluationfunctions import Evaluation, Likelihood
 
 from sensitivity_base import SensitivityAnalysis
 from sensitivity_dynamic import DynamicSensitivity
