@@ -64,12 +64,12 @@ def cceua(s, sf, bl, bu, icall, maxn,
     ibound=0
     s1=snew-bl
     idx=(s1<0).nonzero()
-    if idx[0].size <> 0:
+    if idx[0].size != 0:
         ibound=1
 
     s1=bu-snew
     idx=(s1<0).nonzero()
-    if idx[0].size <> 0:
+    if idx[0].size != 0:
         ibound=2
 
     if ibound >= 1:
@@ -202,26 +202,26 @@ def sceua(x0, bl, bu, maxn, kstop, pcento, peps, ngs, iseed,
     # Computes the normalized geometric range of the parameters
     gnrng=np.exp(np.mean(np.log((np.max(x,axis=0)-np.min(x,axis=0))/bound)))
 
-    print 'The Initial Loop: 0'
-    print ' BESTF:  %f ' %bestf
-    print ' BESTX:  '
-    print bestx
-    print ' WORSTF:  %f ' %worstf
-    print ' WORSTX: '
-    print worstx
-    print '     '
+    print('The Initial Loop: 0')
+    print(' BESTF:  %f ' %bestf)
+    print(' BESTX:  ')
+    print(bestx)
+    print(' WORSTF:  %f ' %worstf)
+    print(' WORSTX: ')
+    print(worstx)
+    print('     ')
 
     # Check for convergency;
     if icall >= maxn:
-        print '*** OPTIMIZATION SEARCH TERMINATED BECAUSE THE LIMIT'
-        print 'ON THE MAXIMUM NUMBER OF TRIALS '
-        print maxn
-        print 'HAS BEEN EXCEEDED.  SEARCH WAS STOPPED AT TRIAL NUMBER:'
-        print icall
-        print 'OF THE INITIAL LOOP!'
+        print('*** OPTIMIZATION SEARCH TERMINATED BECAUSE THE LIMIT')
+        print('ON THE MAXIMUM NUMBER OF TRIALS ')
+        print(maxn)
+        print('HAS BEEN EXCEEDED.  SEARCH WAS STOPPED AT TRIAL NUMBER:')
+        print(icall)
+        print('OF THE INITIAL LOOP!')
 
     if gnrng < peps:
-        print 'THE POPULATION HAS CONVERGED TO A PRESPECIFIED SMALL PARAMETER SPACE'
+        print('THE POPULATION HAS CONVERGED TO A PRESPECIFIED SMALL PARAMETER SPACE')
 
     # Begin evolution loops:
     nloop = 0
@@ -237,7 +237,7 @@ def sceua(x0, bl, bu, maxn, kstop, pcento, peps, ngs, iseed,
             cx=np.zeros((npg,nopt))
             cf=np.zeros((npg))
 
-            k1=np.array(range(npg))
+            k1=np.array(list(range(npg)))
             k2=k1*ngs+igs
             cx[k1,:] = x[k2,:]
             cf[k1] = xf[k2]
@@ -314,24 +314,24 @@ def sceua(x0, bl, bu, maxn, kstop, pcento, peps, ngs, iseed,
         # Computes the normalized geometric range of the parameters
         gnrng=np.exp(np.mean(np.log((np.max(x,axis=0)-np.min(x,axis=0))/bound)))
 
-        print 'Evolution Loop: %d  - Trial - %d' %(nloop,icall)
-        print ' BESTF:  %f ' %bestf
-        print ' BESTX:  '
-        print bestx
-        print ' WORSTF:  %f ' %worstf
-        print ' WORSTX: '
-        print worstx
-        print '     '
+        print('Evolution Loop: %d  - Trial - %d' %(nloop,icall))
+        print(' BESTF:  %f ' %bestf)
+        print(' BESTX:  ')
+        print(bestx)
+        print(' WORSTF:  %f ' %worstf)
+        print(' WORSTX: ')
+        print(worstx)
+        print('     ')
 
         # Check for convergency;
         if icall >= maxn:
-            print '*** OPTIMIZATION SEARCH TERMINATED BECAUSE THE LIMIT'
-            print 'ON THE MAXIMUM NUMBER OF TRIALS '
-            print maxn
-            print 'HAS BEEN EXCEEDED.'
+            print('*** OPTIMIZATION SEARCH TERMINATED BECAUSE THE LIMIT')
+            print('ON THE MAXIMUM NUMBER OF TRIALS ')
+            print(maxn)
+            print('HAS BEEN EXCEEDED.')
 
         if gnrng < peps:
-            print 'THE POPULATION HAS CONVERGED TO A PRESPECIFIED SMALL PARAMETER SPACE'
+            print('THE POPULATION HAS CONVERGED TO A PRESPECIFIED SMALL PARAMETER SPACE')
 
         criter=np.append(criter,bestf)
 
@@ -339,13 +339,13 @@ def sceua(x0, bl, bu, maxn, kstop, pcento, peps, ngs, iseed,
             criter_change= np.abs(criter[nloop-1]-criter[nloop-kstop])*100
             criter_change= criter_change/np.mean(np.abs(criter[nloop-kstop:nloop]))
             if criter_change < pcento:
-                print 'THE BEST POINT HAS IMPROVED IN LAST %d LOOPS BY LESS THAN THE THRESHOLD %f' %(kstop,pcento)
-                print 'CONVERGENCY HAS ACHIEVED BASED ON OBJECTIVE FUNCTION CRITERIA!!!'
+                print('THE BEST POINT HAS IMPROVED IN LAST %d LOOPS BY LESS THAN THE THRESHOLD %f' %(kstop,pcento))
+                print('CONVERGENCY HAS ACHIEVED BASED ON OBJECTIVE FUNCTION CRITERIA!!!')
 
     # End of the Outer Loops
-    print 'SEARCH WAS STOPPED AT TRIAL NUMBER: %d' %icall
-    print 'NORMALIZED GEOMETRIC RANGE = %f'  %gnrng
-    print 'THE BEST POINT HAS IMPROVED IN LAST %d LOOPS BY %f' %(kstop,criter_change)
+    print('SEARCH WAS STOPPED AT TRIAL NUMBER: %d' %icall)
+    print('NORMALIZED GEOMETRIC RANGE = %f'  %gnrng)
+    print('THE BEST POINT HAS IMPROVED IN LAST %d LOOPS BY %f' %(kstop,criter_change))
 
     #reshape BESTX
     BESTX=BESTX.reshape(BESTX.size/nopt,nopt)

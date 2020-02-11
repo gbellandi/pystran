@@ -85,16 +85,16 @@ class GlobalOATSensitivity(SensitivityAnalysis):
         
         if ModelType == 'pyFUSE':
             self.modeltype = 'pyFUSE'
-            print 'The analysed model is built up by the pyFUSE environment'
+            print('The analysed model is built up by the pyFUSE environment')
         elif ModelType == 'external':
             self.modeltype = 'pyFUSE'           
-            print 'The analysed model is externally run'            
+            print('The analysed model is externally run')            
         elif ModelType == 'PCRaster':
             self.modeltype = 'PCRasterPython'
-            print 'The analysed model is a PCRasterPython Framework instance'
+            print('The analysed model is a PCRasterPython Framework instance')
         elif ModelType == 'testmodel':
             self.modeltype = 'testmodel'
-            print 'The analysed model is a testmodel'            
+            print('The analysed model is a testmodel')            
         else:
             raise Exception('Not supported model type')
 
@@ -160,7 +160,7 @@ class GlobalOATSensitivity(SensitivityAnalysis):
     
 #            Par2run = np.zeros((nbaseruns,self._ndim))
             
-            for i in xrange(1, nbaseruns+1):   
+            for i in range(1, nbaseruns+1):   
                 [r, seed_out] = i4_sobol(self._ndim, seedin)
                 Par2run[i-1,:] = r        
                 seedin = seed_out
@@ -169,7 +169,7 @@ class GlobalOATSensitivity(SensitivityAnalysis):
                 Par2run[:,i] = rescale(Par2run[:,i], FacIn[i][0], 
                                             FacIn[i][1]) 
             self.seed_out = seed_out
-            print 'Last seed pointer is ',seed_out
+            print('Last seed pointer is ',seed_out)
 
         elif samplemethod=='lh':
             self.nbaseruns = nbaseruns
@@ -281,7 +281,7 @@ class GlobalOATSensitivity(SensitivityAnalysis):
             self.CAS_SENS[i,:] = self.CAS[i::self._ndim].mean(axis=0)
             self.CTRS_SENS[i,:] = self.CTRS[i::self._ndim].mean(axis=0)
             
-        print 'Use PE_SENS for ranking purposes; since it uses the absolute value of the change; giving no compensation between positive and negative partial effects'
+        print('Use PE_SENS for ranking purposes; since it uses the absolute value of the change; giving no compensation between positive and negative partial effects')
         
     def Get_ranking(self, choose_output=False):        
         '''
@@ -324,30 +324,30 @@ class GlobalOATSensitivity(SensitivityAnalysis):
                 
         #get it clean in dictionary
         if RANK.size == RANK.shape[0]: #only one output
-            print 'Ranking for the singls output'
+            print('Ranking for the singls output')
             i=1
             self.rankdict={}
             for rank in RANK:
                 self.rankdict[str(i)] = self._namelist[rank]
-                print str(i),' : ',self._namelist[rank]
+                print(str(i),' : ',self._namelist[rank])
                 i+=1
             return self.rankmatrix, self.rankdict
                 
         else: #multiple outputs
             self.overall_importance = self.rankmatrix.min(axis=1)
             if choose_output == False:
-                print 'Combined ranking, by taking minimum ranking of the parameters over the different outputs'
+                print('Combined ranking, by taking minimum ranking of the parameters over the different outputs')
                 i=0
                 for rank in self.overall_importance:
-                    print self._namelist[i],' : ', str(rank)
+                    print(self._namelist[i],' : ', str(rank))
                     i+=1            
             else:
-                print 'Ranking for selected output'
+                print('Ranking for selected output')
                 i=1
                 self.rankdict={}
                 for rank in RANK[:,choose_output-1]:
                     self.rankdict[str(i)] = self._namelist[rank]
-                    print str(i),' : ',self._namelist[rank]
+                    print(str(i),' : ',self._namelist[rank])
                     i+=1     
             return self.rankmatrix        
 
@@ -379,12 +379,12 @@ class GlobalOATSensitivity(SensitivityAnalysis):
         else:                           #MULTIPLE outputs
             for i in range(self.rankmatrix.shape[1]):
                 col.append(self.rankmatrix[:,i].tolist())
-        print col
+        print(col)
         
         t.add_data(col, sigfigs=2) #,col3
         t.print_table(fout)
         fout.close()
-        print 'Latex Results latex table file saved in directory %s'%os.getcwd()        
+        print('Latex Results latex table file saved in directory %s'%os.getcwd())        
 
 
     def txtresults(self, outputnames, name='GlobalOATresults.txt'):
@@ -416,7 +416,7 @@ class GlobalOATSensitivity(SensitivityAnalysis):
                 nstring+=nname           
             fout.write('%s %s \n' %(self._parmap[i],nstring))                                            
         fout.close()
-        print 'txt Results file saved in directory %s'%os.getcwd()
+        print('txt Results file saved in directory %s'%os.getcwd())
                         
     def plotsens(self, indice='PE', width = 0.5, addval = True, sortit = True, outputid = 0,
                 *args, **kwargs):
@@ -481,7 +481,7 @@ class GlobalOATSensitivity(SensitivityAnalysis):
         '''
         
         if len(outputnames) > 20.:
-            print 'Consider to split up the outputs to get nicer overview'
+            print('Consider to split up the outputs to get nicer overview')
         try:
             self.rankmatrix
         except:

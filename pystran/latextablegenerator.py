@@ -15,7 +15,7 @@ import numpy
 import os,string,re,sys
 import types
 
-float_types = [types.FloatType, numpy.float16, numpy.float32, numpy.float64]
+float_types = [float, numpy.float16, numpy.float32, numpy.float64]
 
 '''
 This module provides function for working with significant
@@ -26,12 +26,12 @@ epat = re.compile(r'^([^e]+)e(.+)$')
 
 def round_sig(x, n):
    '''round floating point x to n significant figures'''
-   if type(n) is not types.IntType:
-      raise TypeError, "n must be an integer"
+   if type(n) is not int:
+      raise TypeError("n must be an integer")
    try:
       x = float(x)
    except:
-      raise TypeError, "x must be a floating point object"
+      raise TypeError("x must be a floating point object")
    form = "%0." + str(n-1) + "e"
    st = form % x
    num,expo = epat.findall(st)[0]
@@ -84,7 +84,7 @@ def format_table(cols, errors, n, labels=None, headers=None, latex=False):
    an optional list of column headers.  If [latex] is true, format
    the table so that it can be included in a LaTeX table '''
    if len(cols) != len(errors):
-      raise ValueError, "Error:  cols and errors must have same length"
+      raise ValueError("Error:  cols and errors must have same length")
 
    ncols = len(cols)
    nrows = len(cols[0])
@@ -96,14 +96,14 @@ def format_table(cols, errors, n, labels=None, headers=None, latex=False):
          elif len(headers) == ncols+1:
             pass
          else:
-            raise ValueError, "length of headers should be %d" % (ncols+1)
+            raise ValueError("length of headers should be %d" % (ncols+1))
       else:
          if len(headers) != ncols:
-            raise ValueError, "length of headers should be %d" % (ncols)
+            raise ValueError("length of headers should be %d" % (ncols))
 
    if labels is not None:
       if len(labels) != nrows:
-         raise ValueError, "length of labels should be %d" % (nrows)
+         raise ValueError("length of labels should be %d" % (nrows))
 
    strcols = []
    for col,error in zip(cols,errors):
@@ -117,7 +117,7 @@ def format_table(cols, errors, n, labels=None, headers=None, latex=False):
    lengths = [max([len(item) for item in strcol]) for strcol in strcols]
    format = ""
    if labels is not None:
-      format += "%%%ds " % (max(map(len, labels)))
+      format += "%%%ds " % (max(list(map(len, labels))))
       if latex:
          format += "& "
    for length in lengths: 
@@ -192,10 +192,10 @@ class Table:
       else:
          self.justs = list(justs)
          if len(self.justs) != numcols:
-            raise ValueError, "Error, justs must have %d elements" % (numcols)
+            raise ValueError("Error, justs must have %d elements" % (numcols))
       for just in self.justs:
          if just not in ['c','r','l']:
-            raise ValueError, "Error, invalid character for just: %s" % just
+            raise ValueError("Error, invalid character for just: %s" % just)
       self.fontsize = fontsize
       self.rotate = rotate
       self.tablewidth = tablewidth
@@ -224,21 +224,21 @@ class Table:
       
       if cols is None:
          if len(headers) != self.numcols:
-            raise ValueError, "Error, headers must be a list of length %d" %\
-                  self.numcols
+            raise ValueError("Error, headers must be a list of length %d" %\
+                  self.numcols)
          self.headers.append(headers)
-         self.header_ids.append(range(self.numcols))
+         self.header_ids.append(list(range(self.numcols)))
       else:
          ids = []
          for item in cols:
-            if type(item) is types.IntType:
+            if type(item) is int:
                ids.append(item)
-            elif type(item) is types.TupleType:
-               ids += range(item[0],item[1]+1)
+            elif type(item) is tuple:
+               ids += list(range(item[0],item[1]+1))
 
          ids.sort
-         if ids != range(self.numcols):
-            raise ValueError, "Error, missing columns in cols"
+         if ids != list(range(self.numcols)):
+            raise ValueError("Error, missing columns in cols")
          self.headers.append(headers)
          self.header_ids.append(cols)
       return
@@ -255,29 +255,27 @@ class Table:
       given, it will be printed in the table with \cutinhead if labeltype
       is 'cutin' or \sidehead if labeltype is 'side'.'''
 
-      if type(data) is not types.ListType:
-         raise ValueError, "data should be a list"
+      if type(data) is not list:
+         raise ValueError("data should be a list")
       if len(data) != self.numcols:
-         raise ValueError, \
-               "Error, length of data mush match number of table columns"
+         raise ValueError("Error, length of data mush match number of table columns")
 
       for datum in data:
-         if type(datum) not in [types.ListType, numpy.ndarray]:
-            raise ValueError, "data must be list of lists and numpy arrays"
+         if type(datum) not in [list, numpy.ndarray]:
+            raise ValueError("data must be list of lists and numpy arrays")
          if len(numpy.shape(datum)) not in [1,2]:
-            raise ValueError, "data items must be 1D or 2D"
+            raise ValueError("data items must be 1D or 2D")
 
       nrows = numpy.shape(data[0])[0]
       for datum in data[1:]:
          if numpy.shape(datum)[0] != nrows:
-            raise ValueError, "each data item must have same first dimension"
+            raise ValueError("each data item must have same first dimension")
       self.nrows.append(nrows)
       if len(numpy.shape(sigfigs)) == 0:
          self.sigfigs.append([sigfigs for i in range(self.numcols)])
       else:
          if len(numpy.shape(sigfigs)) != 1:
-            raise ValueError, \
-               "sigfigs must be scalar or have same length as number of columns"
+            raise ValueError("sigfigs must be scalar or have same length as number of columns")
          self.sigfigs.append(sigfigs)
       self.data_labels.append(label)
       self.data_label_types.append(labeltype)

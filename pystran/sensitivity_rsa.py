@@ -80,16 +80,16 @@ class RegionalSensitivity(SensitivityAnalysis):
         
         if ModelType == 'pyFUSE':
             self.modeltype = 'pyFUSE'
-            print 'The analysed model is built up by the pyFUSE environment'
+            print('The analysed model is built up by the pyFUSE environment')
         elif ModelType == 'external':
             self.modeltype = 'pyFUSE'           
-            print 'The analysed model is externally run'            
+            print('The analysed model is externally run')            
         elif ModelType == 'PCRaster':
             self.modeltype = 'PCRasterPython'
-            print 'The analysed model is a PCRasterPython Framework instance'
+            print('The analysed model is a PCRasterPython Framework instance')
         elif ModelType == 'testmodel':
             self.modeltype = 'testmodel'
-            print 'The analysed model is a testmodel'            
+            print('The analysed model is a testmodel')            
         else:
             raise Exception('Not supported model type')
         
@@ -136,7 +136,7 @@ class RegionalSensitivity(SensitivityAnalysis):
 
         Par2run = np.zeros((nbaseruns,self._ndim))
         
-        for i in xrange(1, nbaseruns+1):   
+        for i in range(1, nbaseruns+1):   
             [r, seed_out] = i4_sobol(self._ndim, seedin)
             Par2run[i-1,:] = r        
             seedin = seed_out
@@ -222,7 +222,7 @@ class RegionalSensitivity(SensitivityAnalysis):
             InputPar_Behav=np.delete(InputPar, indBad, 0)
 
         else:
-            print ' Choose appropriate method: treshold or percentage'
+            print(' Choose appropriate method: treshold or percentage')
 
         #Normaliseren van de Objectieffunctie 1!
         if norm==True:

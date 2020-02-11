@@ -80,16 +80,16 @@ class SobolVariance(SensitivityAnalysis):
         
         if ModelType == 'pyFUSE':
             self.modeltype = 'pyFUSE'
-            print 'The analysed model is built up by the pyFUSE environment'
+            print('The analysed model is built up by the pyFUSE environment')
         elif ModelType == 'external':
             self.modeltype = 'pyFUSE'           
-            print 'The analysed model is externally run'            
+            print('The analysed model is externally run')            
         elif ModelType == 'PCRaster':
             self.modeltype = 'PCRasterPython'
-            print 'The analysed model is a PCRasterPython Framework instance'
+            print('The analysed model is a PCRasterPython Framework instance')
         elif ModelType == 'testmodel':
             self.modeltype = 'testmodel'
-            print 'The analysed model is a testmodel'            
+            print('The analysed model is a testmodel')            
         else:
             raise Exception('Not supported model type')
 
@@ -142,7 +142,7 @@ class SobolVariance(SensitivityAnalysis):
         Par2run = np.zeros((nbaseruns,ndim2))
         self.Par2run = np.zeros((nbaseruns,ndim2))
         
-        for i in xrange(1, nbaseruns+1):   
+        for i in range(1, nbaseruns+1):   
             [r, seed_out] = i4_sobol(ndim2, seedin)
             Par2run[i-1,:] = r        
             seedin = seed_out
@@ -174,7 +174,7 @@ class SobolVariance(SensitivityAnalysis):
         #HERE THE CONDITIONAL PART NEEDS TO BE ADDED
         #conservative strategy: sample random untill enough with the conditions are found
         cnt = 0
-        print 'get samples...'
+        print('get samples...')
         while cnt < nbaseruns:
             newset_a = np.zeros(self._ndim)
             newset_b = np.zeros(self._ndim)
@@ -241,9 +241,9 @@ class SobolVariance(SensitivityAnalysis):
         self.nbaseruns = nbaseruns
         self.totalruns = nbaseruns*(2 + self._ndim)*repl
         self.startedseed = seed
-        print self.startedseed
+        print(self.startedseed)
 
-        print 'The total cost of the analysis well be %d Monte Carlo Runs' %(nbaseruns*(2+self._ndim)*repl) 
+        print('The total cost of the analysis well be %d Monte Carlo Runs' %(nbaseruns*(2+self._ndim)*repl)) 
         
         #Set up the matrices
         #---------------------
@@ -262,7 +262,7 @@ class SobolVariance(SensitivityAnalysis):
         # But implementation cited elsewhere
         
         sAB = self.Par2run
-        print sAB.shape
+        print(sAB.shape)
         
         Aall = sAB[:,:self._ndim] 
         Ball = sAB[:,self._ndim:]
@@ -281,7 +281,7 @@ class SobolVariance(SensitivityAnalysis):
 #        print self.Ctorun.shape
         
         if self.repl > 1:
-            print self.repl,' replications of analysis are used'
+            print(self.repl,' replications of analysis are used')
             for i in range(1,repl):
                 A = Aall[i*self.nbaseruns : (i+1)*self.nbaseruns]
                 B = Ball[i*self.nbaseruns : (i+1)*self.nbaseruns]
@@ -299,9 +299,9 @@ class SobolVariance(SensitivityAnalysis):
         
         self.parset2run = Ctorun
         self.totalnumberruns = self.parset2run.shape[0]
-        print self.Ctorun.shape
+        print(self.Ctorun.shape)
         #Model needs to run for everyline of the returned matrix  
-        print 'The parameter sets to calculate the model are stored in self.parset2run and can be extracted'
+        print('The parameter sets to calculate the model are stored in self.parset2run and can be extracted')
                
 
     def SobolVariancePost(self, output, repl = 1, adaptedbaserun = None, forevol=False):
@@ -341,7 +341,7 @@ class SobolVariance(SensitivityAnalysis):
 #            if forevol == False:
 #                raise Exception('Sobol variance evaluation considers only 1 ouput value (1D arrays)')
         
-        if repl <> self.repl:
+        if repl != self.repl:
             raise Exception('Control if your number of replicates is correct,\
                             since it does not agree with the saved number')   
         #Needed for the vonvergense test 
@@ -452,22 +452,22 @@ class SobolVariance(SensitivityAnalysis):
             for j in range(repl):
                 MAESTi[j] = np.sum(np.abs(VTi/Vtot-self.STi[j,:]))  
 
-            print 'Analytical Solution for Si: \n'                
-            print Vi/Vtot
-            print 'Sobol solution for Si: \n'            
-            print self.Si
-            print 'Mean Absolute Error of Si is:', MAESi.mean()
-            print ' \n Anaytical Solution for STi:'            
-            print VTi/Vtot
-            print 'Sobol solution for STi: \n'            
-            print self.STi
-            print 'Mean Absolute Error of STi is:', MAESTi.mean()
-            print 'Sobol solution for STij: \n'
-            print self.STij
+            print('Analytical Solution for Si: \n')                
+            print(Vi/Vtot)
+            print('Sobol solution for Si: \n')            
+            print(self.Si)
+            print('Mean Absolute Error of Si is:', MAESi.mean())
+            print(' \n Anaytical Solution for STi:')            
+            print(VTi/Vtot)
+            print('Sobol solution for STi: \n')            
+            print(self.STi)
+            print('Mean Absolute Error of STi is:', MAESTi.mean())
+            print('Sobol solution for STij: \n')
+            print(self.STij)
         
         elif model == 'analgstarfunc':
             if repl > 1:
-                print 'Caution: replicates not supported on MAE calculation, results not represent'
+                print('Caution: replicates not supported on MAE calculation, results not represent')
             ai = inputsmod[0]
             alphai = inputsmod[1]
             di = inputsmod[2]
@@ -487,11 +487,11 @@ class SobolVariance(SensitivityAnalysis):
                 Vtot = Vtot * (1+Vi[i])
             Vtot = Vtot -1.
             
-            print 'Anaytical Solution for Si:'
-            print Vi/Vtot
-            print 'Sobol solution for Si:'
-            print self.Si
-            print 'Mean Absolute Error for Si is:', np.sum(np.abs(Vi/Vtot-self.Si))
+            print('Anaytical Solution for Si:')
+            print(Vi/Vtot)
+            print('Sobol solution for Si:')
+            print(self.Si)
+            print('Mean Absolute Error for Si is:', np.sum(np.abs(Vi/Vtot-self.Si)))
         
         else: 
             raise Exception('Use analgfunc or analgstarfunc')
@@ -506,7 +506,7 @@ class SobolVariance(SensitivityAnalysis):
             output file name; use .tex extension in the name
         '''
         if self.repl > 1:
-            print 'Table generates only output of first line!'
+            print('Table generates only output of first line!')
             
         fout = open(name,'w')
         t = Table(3, justs='lcc', caption='First order and Total sensitivity index', label="tab:sobol1tot")
@@ -522,7 +522,7 @@ class SobolVariance(SensitivityAnalysis):
         t.add_data([col1,col2,col3], sigfigs=2) #,col3
         t.print_table(fout)
         fout.close()
-        print 'Results latex table file saved in directory %s'%os.getcwd()        
+        print('Results latex table file saved in directory %s'%os.getcwd())        
 
 
     def txtresults(self, name = 'Sobolresults.txt'):
@@ -536,7 +536,7 @@ class SobolVariance(SensitivityAnalysis):
         
         '''
         if self.repl > 1:
-            print 'Table generates only output of first line!'
+            print('Table generates only output of first line!')
             
         fout = open(name,'w')
         fout.write('Par \t Si \t STi \n')
@@ -547,7 +547,7 @@ class SobolVariance(SensitivityAnalysis):
                                                self.STi.sum()))                                              
         fout.close()
         
-        print 'Results file saved in directory %s'%os.getcwd()
+        print('Results file saved in directory %s'%os.getcwd())
 
 
     def plotSi(self, width = 0.5, addval = True, sortit = True, 
@@ -569,7 +569,7 @@ class SobolVariance(SensitivityAnalysis):
         
         '''
         if self.repl > 1:
-            print 'Table generates only output of first line!'
+            print('Table generates only output of first line!')
             
         fig = plt.figure() 
         ax1 = fig.add_subplot(111)
@@ -602,7 +602,7 @@ class SobolVariance(SensitivityAnalysis):
         
         '''
         if self.repl > 1:
-            print 'Table generates only output of first line!'
+            print('Table generates only output of first line!')
             
         fig = plt.figure() 
         ax1 = fig.add_subplot(111)
@@ -656,8 +656,8 @@ class SobolVariance(SensitivityAnalysis):
         if repl > 1:
             raise Exception('Not supported for replicates!')
         
-        if output <> None:
-            print 'alternative output...'
+        if output != None:
+            print('alternative output...')
             self.output2evaluate = output
         else:
             self.output2evaluate =  self._outputbk

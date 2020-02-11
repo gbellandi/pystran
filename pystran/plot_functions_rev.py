@@ -251,25 +251,25 @@ def scatterplot_matrix(data1, plottext=None, data2 = False, limin = False,
                 limax1=np.around(np.max(data1[i]),decimals = dec1)
                 limin2=np.around(np.min(data2[i]),decimals = dec2)
                 limax2=np.around(np.max(data2[i]),decimals = dec2)
-                print dec2
+                print(dec2)
                 limin.append(min(limin1,limin2))
                 limax.append(max(limax1,limax2))
 
                 if np.abs(limin1 - limin2) > min(limin1,limin2):
-                    print np.abs(limin1 - limin2), min(limin1,limin2),'min'
-                    print 'potentially the datalimits of two datasets are \
-                    too different for presenting results'
+                    print(np.abs(limin1 - limin2), min(limin1,limin2),'min')
+                    print('potentially the datalimits of two datasets are \
+                    too different for presenting results')
                 if np.abs(limax1 - limax2) > min(limax1,limax2):
-                    print np.abs(limax1 - limax2), min(limax1,limax2),'max'
-                    print 'potentially the datalimits of two datasets are\
-                    too different for acceptabel results'
+                    print(np.abs(limax1 - limax2), min(limax1,limax2),'max')
+                    print('potentially the datalimits of two datasets are\
+                    too different for acceptabel results')
             else:
                 dec1 = definedec(np.min(data1[i]),np.max(data1[i]))
                 limin.append(np.around(np.min(data1[i]),decimals = dec1))
                 limax.append(np.around(np.max(data1[i]),decimals = dec1))
-        print 'used limits are', limin,'and', limax
+        print('used limits are', limin,'and', limax)
     else:
-        print 'used limits are', limin,'and', limax
+        print('used limits are', limin,'and', limax)
 
     # Plot the data.
     for i, j in zip(*np.triu_indices_from(axes, k=1)):
@@ -369,17 +369,17 @@ def scatterplot_matrix(data1, plottext=None, data2 = False, limin = False,
                                     facecolor = 'none', bins=20,
                                     edgecolor=str(cls[ig]), linewidth = 1.5)
                 axes[i,i].set_xlim(limin[i],limax[i])
-                print limin[i],limax[i]
+                print(limin[i],limax[i])
             else:
                 axes[i,i].hist(data1[i],bins=20,color='k')
                 axes[i,i].set_xlim(limin[i],limax[i])
-                print limin[i],limax[i]
+                print(limin[i],limax[i])
 
     if plothist:
-        print 'plottext is not added'
+        print('plottext is not added')
 
     # Turn on the proper x or y axes ticks.
-    for i, j in zip(range(numvars), itertools.cycle((-1, 0))):
+    for i, j in zip(list(range(numvars)), itertools.cycle((-1, 0))):
         axes[j,i].xaxis.set_visible(True)
         axes[i,j].yaxis.set_visible(True)
 
@@ -763,8 +763,8 @@ def Scatter_hist(data1, data2, data1b=False, data2b=False, binwidth = 0.5,
 
     # the scatter plot:
     if isinstance(data1b, np.ndarray):
-        print '*args, **kwargs do not have any influcence when using two\
-        options'
+        print('*args, **kwargs do not have any influcence when using two\
+        options')
         axScatter.scatter(data1, data2, facecolor = 'none',
                           edgecolor='k',s=25)
         axScatter.scatter(data1b, data2b, facecolor='none',
@@ -1009,8 +1009,8 @@ def Scatter_hist_withOF(data1, data2, data1b=False, data2b=False, xbinwidth = 0.
             binsyb = np.arange(yminb,ymaxb+ybinwidth_abs,ybinwidth_abs)
 
         if SSE == None:
-            print '*args, **kwargs do not have any influence when using two\
-            options'
+            print('*args, **kwargs do not have any influence when using two\
+            options')
             sc1 = axScatter.scatter(data1, data2, facecolor = 'none',
                               edgecolor='k',s=25)
             axScatter.scatter(data1b, data2b, facecolor='none',
@@ -1028,8 +1028,8 @@ def Scatter_hist_withOF(data1, data2, data1b=False, data2b=False, xbinwidth = 0.
                          edgecolor='None', color='grey', normed=True, alpha = roodlichter)
 
         else:
-            print '*args, **kwargs do not have any influence when using two\
-            options'
+            print('*args, **kwargs do not have any influence when using two\
+            options')
             sc1 = axScatter.scatter(data1, data2, c=SSE, vmin=vmin, vmax=vmax,
                               edgecolors= 'none', cmap = colormaps, *args,  **kwargs)
 
@@ -1194,7 +1194,7 @@ def TornadoSensPlot(parnames, parvals, gridbins=4, midwidth=0.5,
 
     # --- Negative effects --- left
     if not negval.any():
-        print 'no negative sensitivities; axis are made equal'
+        print('no negative sensitivities; axis are made equal')
         setequal = True
 
     axleft  = fig.add_subplot(121)
@@ -1244,7 +1244,7 @@ def TornadoSensPlot(parnames, parvals, gridbins=4, midwidth=0.5,
 
     # --- Positive effects ---
     if not posval.any():
-        print 'no positive sensitivities; axis are made equal'
+        print('no positive sensitivities; axis are made equal')
         setequal = True
 
     axright = fig.add_subplot(122, sharey=axleft)
@@ -1352,7 +1352,7 @@ def plotbar(ax1, values, names, width = 0.5, addval = True, sortit = False,
     ax1.spines['bottom'].set_position('zero')
 
     bwidth = width
-    xlocations = np.array(range(len(values))) + 0.25
+    xlocations = np.array(list(range(len(values)))) + 0.25
     ax1.bar(xlocations, values, width = bwidth, *args, **kwargs)
 
     if addval == True:
@@ -1457,7 +1457,7 @@ def plothbar(ax1, values, names, width = 0.5, addval = True, sortit = False,
     ax1.spines['bottom'].set_position('zero')
 
     bwidth = width
-    ylocations = np.array(range(len(values))) + 0.25
+    ylocations = np.array(list(range(len(values)))) + 0.25
     ax1.barh(ylocations, values,  height = width, *args, **kwargs)
 
     if addval == True:
@@ -1709,7 +1709,7 @@ def interactionplot(values, names, lwidth = 2.):
     plt.pcolor(values, cmap=cm.gray_r, edgecolors='k',
                norm = Normalize(), linewidths=lwidth)
     plt.colorbar(pad = 0.10)
-    xlocations = np.array(range(nsize)) + 0.5
+    xlocations = np.array(list(range(nsize))) + 0.5
     ax1.yaxis.tick_right()
     plt.xticks(xlocations, names, rotation = 30)
     plt.yticks(xlocations, names, rotation = 30) #, size='small'

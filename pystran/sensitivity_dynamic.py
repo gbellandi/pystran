@@ -55,16 +55,16 @@ class DynamicSensitivity(SensitivityAnalysis):
         
         if ModelType == 'pyFUSE':
             self.modeltype = 'pyFUSE'
-            print 'The analysed model is built up by the pyFUSE environment'
+            print('The analysed model is built up by the pyFUSE environment')
         elif ModelType == 'external':
             self.modeltype = 'pyFUSE'           
-            print 'The analysed model is externally run'            
+            print('The analysed model is externally run')            
         elif ModelType == 'PCRaster':
             self.modeltype = 'PCRasterPython'
-            print 'The analysed model is a PCRasterPython Framework instance'
+            print('The analysed model is a PCRasterPython Framework instance')
         elif ModelType == 'testmodel':
             self.modeltype = 'testmodel'
-            print 'The analysed model is a testmodel'            
+            print('The analysed model is a testmodel')            
         else:
             raise Exception('Not supported model type')
 

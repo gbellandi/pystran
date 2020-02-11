@@ -41,7 +41,7 @@ class Evaluation(FlowAnalysis):
     def __init__(self, observed, modelled):
          FlowAnalysis.__init__(self, observed)
 
-         if modelled.shape <> observed.shape:
+         if modelled.shape != observed.shape:
              raise Exception('Modelled and observed timeseries need \
                                  to be of the same size')
 
@@ -49,7 +49,7 @@ class Evaluation(FlowAnalysis):
          self.residuals = self.observed - self.modelled
          self.infodict()
 
-         print 'Criteria suited for model minimization, use optim=True to be sure'
+         print('Criteria suited for model minimization, use optim=True to be sure')
 
     def infodict(self):
         '''
@@ -1422,7 +1422,7 @@ class Likelihood(FlowAnalysis):
     def __init__(self, observed, modelled):
          FlowAnalysis.__init__(self, observed)
 
-         if modelled.shape <> observed.shape:
+         if modelled.shape != observed.shape:
              raise Exception('Modelled and observed timeseries need \
                                  to be of the same size')
 
@@ -1430,10 +1430,10 @@ class Likelihood(FlowAnalysis):
          self.residuals = self.observed - self.modelled
          self.infodict()
 
-         print 'Criteria suited for Likihood maximization, use optim=True\
+         print('Criteria suited for Likihood maximization, use optim=True\
          to use in minimzation exercise; Not adviced to use in automated\
          minimalization algorithms, because of jumps between 0 and none\
-         zero values, use the evaluation class instead; use log version instead'
+         zero values, use the evaluation class instead; use log version instead')
 
     def infodict(self):
         '''
@@ -1551,7 +1551,7 @@ class evalmodselection(FlowAnalysis):
     def __init__(self, observed, modelled, npar):
          FlowAnalysis.__init__(self, observed)
 
-         if modelled.shape <> observed.shape:
+         if modelled.shape != observed.shape:
              raise Exception('Modelled and observed timeseries need \
                                  to be of the same size')
 
@@ -1560,7 +1560,7 @@ class evalmodselection(FlowAnalysis):
          self.infodict()
          self.npar = npar
 
-         print 'Criteria suited for statistical model structure selection'
+         print('Criteria suited for statistical model structure selection')
 
     def SSE(self):
         return sum(self.residuals**2)

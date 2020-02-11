@@ -48,7 +48,7 @@ def TriangularDistribution(x,left,mode,right):
     see numpy manual (or Beven_book: left=0, right=1)
     '''
     if mode>right:
-        print 'right en mode zijn omgewisseld!!'
+        print('right en mode zijn omgewisseld!!')
     if left<=x<=mode:
         px=2*(x-left)/((right-left)*(mode-left))
     elif mode<=x<=right:
@@ -63,11 +63,11 @@ def TrapezoidalDistribution(x,left,mode1,mode2,right):
      based on a certain inputvalue
     '''
     if mode1>right:
-        print 'right en mode1 zijn omgewisseld!!'
+        print('right en mode1 zijn omgewisseld!!')
     if mode2>right:
-        print 'right en mode2 zijn omgewisseld!!'
+        print('right en mode1 zijn omgewisseld!!')
     if mode1>mode2:
-        print 'mode1 en mode2 zijn omgewisseld!!'
+        print('right en mode1 zijn omgewisseld!!')
 
     u=2/(right+mode2-mode1-left)
 
@@ -150,7 +150,7 @@ def randomTriangular(left=0.0, mode=None, right=1.0, rnsize=None):
     '''
 
     if mode==None:
-        print 'Triangular needs mode-value'
+        print('Triangular needs mode-value')
     rn=np.random.triangular(left, mode, right, rnsize)
     return rn
 
@@ -175,9 +175,9 @@ def randomTrapezoidal(left=0.0, mode1=None, mode2=None,
 
     '''
     if mode1==None:
-        print 'Triangular needs 2 mode-values'
+        print('Triangular needs 2 mode-values')
     if mode1==None:
-        print 'Triangular needs 2 mode-values'
+        print('Triangular needs 2 mode-values')
 
     rn=np.zeros(rnsize)
     for i in range(np.size(rn)):
@@ -196,7 +196,7 @@ def randomTrapezoidal(left=0.0, mode1=None, mode2=None,
         elif (1-h*(b-d)/2)<=y<=1.0:
             rn[i]=b-np.sqrt(2*(b-d)/h)*np.sqrt(1-y)
         else:
-            print 'not in correct range'
+            print('not in correct range')
     return rn
 
 #Normal
@@ -335,5 +335,5 @@ def ltqnorm(p):
 
 def ltqnormarr(parr, mu=0.0, sigma=1.):
     stnorm=np.array([ltqnorm(p) for p in parr])
-    print type(stnorm)
+    print((type(stnorm)))
     return stnorm2norm(stnorm, mu, sigma)

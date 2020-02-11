@@ -301,7 +301,7 @@ class ModPar(object):
         for j in range(0, nruns):
             pranges.append(random.uniform(low + j*delta, low + (j + 1)*delta))
 
-        s = range(0, nruns)
+        s = list(range(0, nruns))
         result = []
         for i in range(0, nruns):
             added = random.sample(s, 1)[0]
@@ -359,13 +359,13 @@ def sobol(parsin, nruns, seed = 1):
     ndim = len(parsin)
     pars = np.zeros((nruns, ndim))
 
-    for i in xrange(1, nruns+1):
+    for i in range(1, nruns+1):
         [r, seed_out] = i4_sobol(ndim, seed)
         pars[i-1, :] = r
         seed = seed_out
     for i in range(ndim):
         pars[:, i] = rescale(pars[:,i], parsin[i].min, parsin[i].max)
-    print 'The seed to continue this sampling procedure is', seed,'.'
-    print 'If you do not update the seed for extra samples, the samples will \
-            be the same!'
+    print('The seed to continue this sampling procedure is', seed,'.')
+    print('If you do not update the seed for extra samples, the samples will \
+            be the same!')
     return pars

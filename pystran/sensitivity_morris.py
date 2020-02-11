@@ -129,16 +129,16 @@ class MorrisScreening(SensitivityAnalysis):
 
         if ModelType == 'pyFUSE':
             self.modeltype = 'pyFUSE'
-            print 'The analysed model is built up by the pyFUSE environment'
+            print('The analysed model is built up by the pyFUSE environment')
         elif ModelType == 'external':
             self.modeltype = 'pyFUSE'
-            print 'The analysed model is externally run'
+            print('The analysed model is externally run')
         elif ModelType == 'PCRaster':
             self.modeltype = 'PCRasterPython'
-            print 'The analysed model is a PCRasterPython Framework instance'
+            print('The analysed model is a PCRasterPython Framework instance')
         elif ModelType == 'testmodel':
             self.modeltype = 'testmodel'
-            print 'The analysed model is a testmodel'
+            print('The analysed model is a testmodel')
         else:
             raise Exception('Not supported model type')
 
@@ -329,8 +329,8 @@ class MorrisScreening(SensitivityAnalysis):
 
         #check the p and Delta value workaround
         if not intervals%2==0:
-            print 'It is adviced to use an even number for the p-value, number \
-            of intervals, since currently not all levels are explored'
+            print('It is adviced to use an even number for the p-value, number \
+            of intervals, since currently not all levels are explored')
 
         if Delta == 'default':
             self.Delta = intervals/(2.*(intervals-1.))
@@ -520,7 +520,7 @@ class MorrisScreening(SensitivityAnalysis):
         fig.suptitle('Optimized sampling')
 #        DimPlots = np.round(NumFact/2)
         DimPlots = int(np.ceil(NumFact/2.))
-#        print hplot.shape
+#        print(hplot.shape)
         for i in range(NumFact):
             ax=fig.add_subplot(DimPlots,2,i+1)
 #            n, bins, patches = ax.hist(hplot[:,i], p, color='k',ec='white')
@@ -611,7 +611,7 @@ class MorrisScreening(SensitivityAnalysis):
         self.QualMeasure = QualMeasure
         self.QualOriMeasure = QualOriMeasure
 
-        print 'The quality of the sampling strategy changed from %.3f with the old strategy to %.3f for the optimized strategy' %(QualOriMeasure,QualMeasure)
+        print('The quality of the sampling strategy changed from %.3f with the old strategy to %.3f for the optimized strategy') %(QualOriMeasure,QualMeasure)
 
     def Morris_Measure_Groups(self, Output):
         '''
@@ -659,11 +659,11 @@ class MorrisScreening(SensitivityAnalysis):
 
         try:
             NumGroups = Group.shape[1]
-            print '%d Groups are used' %NumGroups
+            print('%d Groups are used') %NumGroups
         except:
             NumGroups = 0
-            print 'No Groups are used'
-        print NumGroups, type(NumGroups)
+            print('No Groups are used')
+        print(NumGroups), type(NumGroups)
 #        Delt = p/(2.*(p-1.))
         Delt = self.Delta
 
@@ -672,7 +672,7 @@ class MorrisScreening(SensitivityAnalysis):
             sizeb=sizea+1
             GroupMat=Group
             GroupMat = GroupMat.transpose()
-            print NumGroups
+            print(NumGroups)
         else:
             sizea = NumFact
             sizeb=sizea+1
@@ -764,7 +764,7 @@ class MorrisScreening(SensitivityAnalysis):
                 self.mu = OutMatrix[:,1]
                 self.sigma = OutMatrix[:,2] #for every output: every factor is a line, columns are mu*,mu and std
                 if self.sigma.shape[0] > self._ndim:
-                    print 'Different outputs are used, so split them in comparing the output, by using outputid'
+                    print('Different outputs are used, so split them in comparing the output, by using outputid')
             else:
                 self.mustar = OutMatrix[:]
 
@@ -809,7 +809,7 @@ class MorrisScreening(SensitivityAnalysis):
 
         SAmeas_out, OutMatrix = self.Morris_Measure_Groups(output)
 
-        print 'Higher values of ai correspond to lower importance of Xi \n'
+        print('Higher values of ai correspond to lower importance of Xi \n')
 
         #Analytical to compare -> G
         Vi = np.zeros(len(ai))
@@ -824,17 +824,17 @@ class MorrisScreening(SensitivityAnalysis):
             Vtot = Vtot * (1+Vi[i])
         Vtot = Vtot -1.
 
-        print 'Morris gives only qualitive measures of importance, \n'
-        print 'a correspondance between STi and mustar is expected \n'
-        print 'and compared here \n'
-        print ' \n'
+        print('Morris gives only qualitive measures of importance, \n')
+        print('a correspondance between STi and mustar is expected \n')
+        print('and compared here \n')
+        print(' \n')
 
-        print 'Analytical Solution for STi: \n'
-        print VTi/Vtot
-        print 'The Morris mu* results: \n'
-        print self.mustar
+        print('Analytical Solution for STi: \n')
+        print(VTi/Vtot)
+        print('The Morris mu* results: \n')
+        print(self.mustar)
 
-        print 'A barplot is generated...'
+        print('A barplot is generated...')
         fig, ax1 = self.plotmustar(width=0.15, ec='grey',fc='grey')
         ax1.set_title('Morris screening result')
         fig2 = plt.figure()
@@ -855,7 +855,7 @@ class MorrisScreening(SensitivityAnalysis):
         name : str.tex
             output file name; use .tex extension in the name
         '''
-        print 'tex: The %d th output evaluation criterion is used'%(outputid+1)
+        print('tex: The %d th output evaluation criterion is used')%(outputid+1)
 
         mu2use = self.mu[outputid*self._ndim:(outputid+1)*self._ndim]
         mustar2use = self.mustar[outputid*self._ndim:(outputid+1)*self._ndim]
@@ -873,7 +873,7 @@ class MorrisScreening(SensitivityAnalysis):
         t.add_data([col1,col2,col3,col4], sigfigs=2) #,col3
         t.print_table(fout)
         fout.close()
-        print 'Latex Results latex table file saved in directory %s'%os.getcwd()
+        print('Latex Results latex table file saved in directory %s')%os.getcwd()
 
 
     def txtresults(self, outputid=0, name = 'Morrisresults.txt'):
@@ -888,7 +888,7 @@ class MorrisScreening(SensitivityAnalysis):
             output file name; use .txt extension in the name
 
         '''
-        print 'txt: The %d th output evaluation criterion is used'%(outputid+1)
+        print('txt: The %d th output evaluation criterion is used')%(outputid+1)
 
         mu2use = self.mu[outputid*self._ndim:(outputid+1)*self._ndim]
         mustar2use = self.mustar[outputid*self._ndim:(outputid+1)*self._ndim]
@@ -902,7 +902,7 @@ class MorrisScreening(SensitivityAnalysis):
                                                           mustar2use[i],
                                                           sigma2use[i]))
         fout.close()
-        print 'txt Results file saved in directory %s'%os.getcwd()
+        print('txt Results file saved in directory %s')%os.getcwd()
 
     def plotmu(self, width = 0.5, addval = True, sortit = True, outputid = 0,
                 *args, **kwargs):

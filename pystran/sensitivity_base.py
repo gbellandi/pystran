@@ -27,19 +27,19 @@ class SensitivityAnalysis(object):
         """
         Overview of the used methods
         """
-        print '''1. Sobol Variance Based:
-                    first and total order'''
-        print '''2. Regional Sensitivity Analysis:
-                    also called Monte Carlo Filtering'''
-        print '''3. Morris Screening Method:
-                    with pre-optimized defined trajects and group option'''
-        print '''4. Sampled-OAT:
-                    Latin HYpercube or Sobol sampling with OAT sensitivity'''
-        print '''5. Standardized Regression Coefficients:
-                    Latin HYpercube or Sobol sampling with linear regression'''
-        print '''6. DYNamic Identifiability Analysis:
+        print('''1. Sobol Variance Based:
+                    first and total order''')
+        print('''2. Regional Sensitivity Analysis:
+                    also called Monte Carlo Filtering''')
+        print('''3. Morris Screening Method:
+                    with pre-optimized defined trajects and group option''')
+        print('''4. Sampled-OAT:
+                    Latin HYpercube or Sobol sampling with OAT sensitivity''')
+        print('''5. Standardized Regression Coefficients:
+                    Latin HYpercube or Sobol sampling with linear regression''')
+        print('''6. DYNamic Identifiability Analysis:
                     Latin HYpercube or Sobol sampling with time-sliced based
-                    evaluation'''
+                    evaluation''')
 
     def __init__(self, parsin):
         '''
@@ -50,10 +50,10 @@ class SensitivityAnalysis(object):
 
         if  isinstance(parsin, dict): #bridge with pyFUSE!
             dictlist = []
-            for value in parsin.itervalues():
+            for value in parsin.values():
                 dictlist.append(value)
             parsin = dictlist
-            print parsin
+            print(parsin)
 
         #control for other
         self._parsin = parsin[:]
@@ -63,7 +63,7 @@ class SensitivityAnalysis(object):
         for i in range(len(parsin)):
             if isinstance(parsin[i], ModPar):
                 cname = parsin[i].name
-                if cname in self._parmap.values():
+                if cname in list(self._parmap.values()):
                     raise ValueError("Duplicate parameter name %s"%cname)
                 self.pars = parsin[:]
                 self._parsin[i] = (parsin[i].min, parsin[i].max, cname)
@@ -80,7 +80,7 @@ class SensitivityAnalysis(object):
                 if not isinstance(parsin[i][2], str):
                     raise Exception('Name of par needs to be string')
 
-                if parsin[i][2] in self._parmap.values():
+                if parsin[i][2] in list(self._parmap.values()):
                     raise ValueError("Duplicate parameter name %s"%parsin[i][2])
                 self._parmap[i] = parsin[i][2]
 
@@ -121,14 +121,14 @@ class SensitivityAnalysis(object):
         """
         try:
             np.savetxt(filename, self.parset2run, *args, **kwargs)
-            print 'file saved in directory %s' % os.getcwd()
+            print('file saved in directory %s' % os.getcwd())
         except PystanSequenceError:
             print('Parameter sets to run model with not yet setup.')
 
     def getcurrentmethod(self):
         """Check if method is defined and return name"""
         if self._methodname == None:
-            print "No method defined."
+            print("No method defined.")
         else:
             return self._methodname
 
@@ -183,14 +183,14 @@ class SensitivityAnalysis(object):
             for i in range(self._ndim):
                 par2pyfuse[self._parmap[i]] = self.parset2run[run, i]
             #run the pyfuse model with new pars
-            print self._methodname, 'Run'+str(run)
-            print 'Simulation %d of %d is \
-                    running...' % (run + 1, self.parset2run.shape[0])
+            print(self._methodname, 'Run'+str(run))
+            print('Simulation %d of %d is \
+                    running...' % (run + 1, self.parset2run.shape[0]))
             pyfuse.run(new_pars = par2pyfuse,
                        run_id = self._methodname + 'Run' + str(run))
 
-        print 'All simulations are performed and saved in hdf5. You can now \
-        transform the output data to an evaluation criterion.'
+        print('All simulations are performed and saved in hdf5. You can now \
+        transform the output data to an evaluation criterion.')
 
     def scattercheck(self, parsamples, output, ncols=3, *args, **kwargs):
         '''

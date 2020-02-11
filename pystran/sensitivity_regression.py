@@ -81,16 +81,16 @@ class SRCSensitivity(SensitivityAnalysis):
         
         if ModelType == 'pyFUSE':
             self.modeltype = 'pyFUSE'
-            print 'The analysed model is built up by the pyFUSE environment'
+            print('The analysed model is built up by the pyFUSE environment')
         elif ModelType == 'external':
             self.modeltype = 'pyFUSE'           
-            print 'The analysed model is externally run'            
+            print('The analysed model is externally run')            
         elif ModelType == 'PCRaster':
             self.modeltype = 'PCRasterPython'
-            print 'The analysed model is a PCRasterPython Framework instance'
+            print('The analysed model is a PCRasterPython Framework instance')
         elif ModelType == 'testmodel':
             self.modeltype = 'testmodel'
-            print 'The analysed model is a testmodel'            
+            print('The analysed model is a testmodel')            
         else:
             raise Exception('Not supported model type')
 
@@ -141,7 +141,7 @@ class SRCSensitivity(SensitivityAnalysis):
             self.nbaseruns = nbaseruns
             # generate a (N,2k) matrix with 
             FacIn = self._parsin           
-            for i in xrange(1, nbaseruns+1):   
+            for i in range(1, nbaseruns+1):   
                 [r, seed_out] = i4_sobol(self._ndim, seedin)
                 self.parset2run[i-1,:] = r        
                 seedin = seed_out
@@ -150,7 +150,7 @@ class SRCSensitivity(SensitivityAnalysis):
                 self.parset2run[:,i] = rescale(self.parset2run[:,i], FacIn[i][0], 
                                             FacIn[i][1]) 
             self.seed_out = seed_out
-            print 'Last seed pointer is ',seed_out
+            print('Last seed pointer is ',seed_out)
 
         elif samplemethod=='lh':
             self.nbaseruns = nbaseruns
@@ -193,19 +193,19 @@ class SRCSensitivity(SensitivityAnalysis):
         To get the Standardized Regression Coefficients (SRC), we need to 
         standardize the variables (outputs and parameters)        
         '''
-        print 'calculating standardized values...'
+        print('calculating standardized values...')
         parmean, parstd = self.parset2run.mean(axis=0), self.parset2run.std(axis=0)
         outmean, outstd = output.mean(axis=0), output.std(axis=0)
         
         self.parscaled = (self.parset2run - parmean)/parstd
         self.outputscaled = (output - outmean)/outstd        
-        print '...done'
+        print('...done')
 
     def _transform2rank(self, pars, output):
         '''
         hidden definition for rank transformation
         '''        
-        print 'calclulating standardized values...'
+        print('calclulating standardized values...')
         
         parranked = np.empty_like(pars)
         for i in range(pars.shape[1]):
@@ -266,8 +266,8 @@ class SRCSensitivity(SensitivityAnalysis):
         
         #calcluate SRC values for each output
         for i in range(output.shape[1]):
-            print '--------------------------'
-            print 'Working on column ',i,'...'
+            print('--------------------------')
+            print('Working on column ',i,'...')
             #the res is the sum(res**2) value; functional for covariance calculation
             self.SRC[:,i], res, rank, s = np.linalg.lstsq(self.parscaled,self.outputscaled[:,i])
             if rankbased == True:
@@ -277,30 +277,30 @@ class SRCSensitivity(SensitivityAnalysis):
             Yi = np.dot(self.parscaled,self.SRC[:,i]) #matrix multiplication
             R = np.corrcoef(self.outputscaled[:,i],Yi)
             Rsq = R**2
-            print 'Rsq (for SRC calculation) = ', Rsq[0,1]
+            print('Rsq (for SRC calculation) = ', Rsq[0,1])
                                            
             #another possibility to get Rsq based on residuals (OLS theory)
             #Rsq_2 = 1. - res / sum((self.outputscaled - self.outputscaled.mean())**2)            
     
             #The 0.7 threshold is a rule of thumb used in literature
             if Rsq[0,1] < 0.7:
-                print '''ATTENTION: the coefficient of determination, Rsq, i.e. the fraction of the output variance that is explained by the regression model, is lower than 0.7. for SRC calcluation. Consider using a method which is less dependent on the assumption of linearity and evaluate SRRC result.'''
+                print('''ATTENTION: the coefficient of determination, Rsq, i.e. the fraction of the output variance that is explained by the regression model, is lower than 0.7. for SRC calcluation. Consider using a method which is less dependent on the assumption of linearity and evaluate SRRC result.''')
             else:
-                print '''Assumption of linearity is assumed valid with the Rsq value higer than 0.7'''
+                print('''Assumption of linearity is assumed valid with the Rsq value higer than 0.7''')
             
             if rankbased == True:
                 Yi = np.dot(self.parrankscaled,self.SRRC[:,i]) #matrix multiplication
                 R = np.corrcoef(self.outputrankscaled[:,i],Yi)
                 Rsq = R**2
-                print 'Rsq (for SRRC calculation) = ',Rsq[0,1] 
+                print('Rsq (for SRRC calculation) = ',Rsq[0,1]) 
 
             #another check: sum of the SRC^2 should be 1!! 
             self.sumcheck[i] = np.dot(self.SRC[:,i].transpose(),self.SRC[:,i])
-            print 'Sum of squared sensitivities should approach 1, for SRC: ',self.sumcheck[i]
+            print('Sum of squared sensitivities should approach 1, for SRC: ',self.sumcheck[i])
             
             if rankbased == True:
                 sumcheck = np.dot(self.SRRC[:,i].transpose(),self.SRRC[:,i])
-                print 'Sum of squared sensitivities should approach 1, for SRRC: ',sumcheck
+                print('Sum of squared sensitivities should approach 1, for SRRC: ',sumcheck)
             
             #Calculates the Parameter variance-covariance  matrix
 			#variances on the diagonal, covariances of factors on the non-diagonal 
@@ -309,14 +309,14 @@ class SRCSensitivity(SensitivityAnalysis):
             s2 = res/(n-p)   #estimator for variance; better to do n-p-1?
             self.cova[:,:,i] = s2 * np.linalg.inv(np.dot(self.parscaled.transpose(),self.parscaled))  #(X'X)-1 s2
             
-            print 'Confidence intervals can be calculated based on covariance matrix, only done for SRC'
+            print('Confidence intervals can be calculated based on covariance matrix, only done for SRC')
 
             #calculate the correlation matrix            
             for k in range(p):
                 for l in range(p):
                     self.corre[k,l,i] = self.cova[k,l,i]/(np.sqrt(self.cova[k,k,i])*np.sqrt(self.cova[l,l,i]))
-            print 'output of column ',i,' done.'
-            print '--------------------------'
+            print('output of column ',i,' done.')
+            print('--------------------------')
     
         #combine results in a ranking    
         RANK = np.argsort(-self.SRC,axis=0)
@@ -451,7 +451,7 @@ class SRCSensitivity(SensitivityAnalysis):
                     ax.set_axis_off()
                 i+=1
         else:
-            print 'SRC values of output ',outputid,' is shown in graph'
+            print('SRC values of output ',outputid,' is shown in graph')
             fig = plt.figure() 
             ax1 = fig.add_subplot(111)
             ax1 = plotbar(ax1, self.SRC[:,outputid], self._namelist, width = width, 
@@ -500,12 +500,12 @@ class SRCSensitivity(SensitivityAnalysis):
         else:                           #MULTIPLE outputs
             for i in range(self.rankmatrix.shape[1]):
                 col.append(towrite[:,i].tolist())
-        print col
+        print(col)
         
         t.add_data(col, sigfigs=2) #,col3
         t.print_table(fout)
         fout.close()
-        print 'Latex Results latex table file saved in directory %s'%os.getcwd()        
+        print('Latex Results latex table file saved in directory %s'%os.getcwd())        
 
     def txtresults(self, outputnames, rank = False, name = 'SRCresults.txt'):
         '''
@@ -546,7 +546,7 @@ class SRCSensitivity(SensitivityAnalysis):
                 nstring+=nname           
             fout.write('%s %s \n' %(self._parmap[i],nstring))                                            
         fout.close()
-        print 'txt Results file saved in directory %s'%os.getcwd()
+        print('txt Results file saved in directory %s'%os.getcwd())
 
 
 
